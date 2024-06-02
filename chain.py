@@ -16,8 +16,6 @@ st.title("Sherlock Story Generator")
 st.header("Create a Story!")
 two_words = st.text_input(label="Give two words to start: ")
 
-
-st.write(two_words)
 start = st.button("Start")
 
 
@@ -90,7 +88,7 @@ filename = 'sherlock_model.sav'
 markov_model = pickle.load(open('sherlock_model.sav', 'rb'))
 
 def generate_story(limit,start):
-   n = 0
+   n = 1
    curr_state = start
    next_state = None
    story = ""
@@ -123,5 +121,5 @@ st.divider()
 
 #print(new_model)
 if start:
-   new_story = generate_story(150, two_words)
+   new_story = generate_story(100, two_words)
    st.code(new_story)
