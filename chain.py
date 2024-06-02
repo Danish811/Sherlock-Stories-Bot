@@ -15,8 +15,6 @@ story_path = "Sherlock-holmes-stories-data\sherlock\sherlock"
 st.title("Sherlock Story Generator")
 st.header("Create a Story!")
 two_words = st.text_input(label="Give two words to start: ")
-
-print("Given Input: ", two_words)
 start = st.button("Start")
 
 
@@ -95,9 +93,10 @@ def generate_story(limit,start):
    story = ""
    story += curr_state+" "
    while n < limit:
-      if curr_state not in markov_model:
+      if curr_state in markov model or curr_state not in markov_model:
         print(f"Error: {curr_state} not in markov_model")
-        curr_state = random.choice(list(markov_model['this case'].keys()))
+        if curr_state not in markov_model:
+          curr_state = random.choice(list(markov_model['this case'].keys()))
       next_state = random.choices(list(markov_model[curr_state].keys()),list(markov_model[curr_state].values()))
       curr_state = next_state[0]
       if n%7==0:
