@@ -100,8 +100,6 @@ def generate_story(limit,full_start_phrase):
    curr_state = " ".join(words[-2:]).lower()
    n = 1
    next_state = None
-   story = ""
-   story += curr_state+" "
    while n < limit:
       if curr_state in markov_model or curr_state not in markov_model:
         print(f"Error: {curr_state} not in markov_model")
@@ -117,10 +115,10 @@ def generate_story(limit,full_start_phrase):
    return story
   
 if st.button("Generate Story"):
-    words = user_input..split()
+    words = user_input.split()
     if len(words) >= 2:
         with st.spinner("Writing a new mystery..."):
-            new_story = generate_story(markov_model, 100, user_input)
+            new_story = generate_story(100, user_input)
             st.divider()
             st.subheader("Your Story:")
             st.markdown(f"> {new_story}")
