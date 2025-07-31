@@ -17,7 +17,7 @@ st.title("Sherlock Story Generator 🕵️")
 st.header("Create a Story!")
 
 
-two_words = st.text_input(label="Give two words to start the story:")
+user_input = st.text_input(label="Give two words to start the story:")
 
 def read_all_stories(story_path):
   txt = []
@@ -94,9 +94,11 @@ def load_model():
 # This now loads the model ONCE and then uses a fast, cached version
 markov_model = load_model()
 
-def generate_story(limit,start):
+def generate_story(limit,full_start_phrase):
+   story = full_start_phrase + " "
+   words = full_start_phrase.split()
+   curr_state = " ".join(words[-2:]).lower()
    n = 1
-   curr_state = start
    next_state = None
    story = ""
    story += curr_state+" "
@@ -115,14 +117,15 @@ def generate_story(limit,start):
    return story
   
 if st.button("Generate Story"):
-    if len(two_words.split()):
+    words = user_input..split()
+    if len(words) >= 2:
         with st.spinner("Writing a new mystery..."):
-            new_story = generate_story(markov_model, 100, two_words)
+            new_story = generate_story(markov_model, 100, user_input)
             st.divider()
             st.subheader("Your Story:")
             st.markdown(f"> {new_story}")
     else:
-        st.error("Please enter exactly two words.")
+        st.error("Please enter atleast two words.")
       
 st.divider()
 
