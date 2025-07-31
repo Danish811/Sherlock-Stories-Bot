@@ -16,8 +16,6 @@ story_path = "Sherlock-holmes-stories-data\sherlock\sherlock"
 st.title("Sherlock Story Generator 🕵️")
 st.header("Create a Story!")
 
-# Load the model using the cached function
-markov_model = load_model()
 
 two_words = st.text_input(label="Give two words to start the story:")
 
