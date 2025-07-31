@@ -102,7 +102,6 @@ def generate_story(limit,full_start_phrase):
    next_state = None
    # Clean logic to handle cases where the starting words aren't in the model
    if curr_state not in markov_model:
-     st.warning(f"Couldn't find a continuation for '{' '.join(words[-2:])}'. Appending a random phrase.")
      story += "\n"  # Start a new line
      curr_state = random.choice(list(markov_model.keys()))
      story += curr_state + " "
