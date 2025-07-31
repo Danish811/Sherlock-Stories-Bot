@@ -84,7 +84,14 @@ filename = 'sherlock_model.sav'
 #print("All possible transitions from 'the game' state is: \n")
 #print(markov_model['the game'])
 
-markov_model = pickle.load(open('sherlock_model.sav', 'rb'))
+@st.cache_data
+def load_model():
+    with open('sherlock_model.sav', 'rb') as file:
+        model = pickle.load(file)
+    return model
+
+# This now loads the model ONCE and then uses a fast, cached version
+markov_model = load_model()
 
 def generate_story(limit,start):
    n = 1
@@ -120,6 +127,22 @@ st.divider()
 # )
 
 #print(new_model)
-if start:
-   new_story = generate_story(90, two_words)
-   st.code(new_story)
+# --- Streamlit UI ---
+
+st.title("Sherlock Story Generator 🕵️")
+st.header("Create a Story!")
+
+# Load the model using the cached function
+markov_model = load_model()
+
+two_words = st.text_input(label="Give two words to start the story:")
+
+if st.button("Generate Story"):
+    if len(two_words.split()) == 2:
+        with st.spinner("Writing a new mystery..."):
+            new_story = generate_story(markov_model, 100, two_words)
+            st.divider()
+            st.subheader("Your Story:")
+            st.markdown(f"> {new_story}")
+    else:
+        st.error("Please enter exactly two words.")
