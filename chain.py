@@ -100,18 +100,33 @@ def generate_story(limit,full_start_phrase):
    curr_state = " ".join(words[-2:]).lower()
    n = 1
    next_state = None
-   while n < limit:
-      if curr_state in markov_model or curr_state not in markov_model:
-        print(f"Error: {curr_state} not in markov_model")
-        if curr_state not in markov_model:
-          curr_state = random.choice(list(markov_model['this case'].keys()))
-      next_state = random.choices(list(markov_model[curr_state].keys()),list(markov_model[curr_state].values()))
-      curr_state = next_state[0]
-      if n%7==0:
-         story += '\n'
-      story += curr_state + " "
-      n += 1
+   # Clean logic to handle cases where the starting words aren't in the model
+   if curr_state not in markov_model:
+     st.warning(f"Couldn't find a continuation for '{' '.join(words[-2:])}'. Appending a random phrase.")
+     story += "\n"  # Start a new line
+     curr_state = random.choice(list(markov_model.keys()))
+     story += curr_state + " "
 
+   n = 0
+   while n < limit:
+     try:
+       # Correctly predict the next single word
+       next_word = random.choices(
+       list(markov_model[curr_state].keys()), list(markov_model[curr_state].values()))[0]
+            
+       # Append only the single predicted word to the story
+       story += next_word + " "
+            
+       # Correctly update the state for the next prediction
+       curr_state = " ".join(curr_state.split()[1:]) + " " + next_word
+            
+       n += 1
+       if n % 15 == 0:
+         story += '\n'
+     except (KeyError, IndexError):
+       # If we hit a dead-end, continue with a new random phrase
+       curr_state = random.choice(list(markov_model.keys()))
+       
    return story
   
 if st.button("Generate Story"):
