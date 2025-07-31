@@ -12,11 +12,14 @@ import streamlit as st
 #nltk.download('punkt')
 story_path = "Sherlock-holmes-stories-data\sherlock\sherlock"
 
-st.title("Sherlock Story Generator")
-st.header("Create a Story!")
-two_words = st.text_input(label="Give two words to start: ")
-start = st.button("Start")
 
+st.title("Sherlock Story Generator 🕵️")
+st.header("Create a Story!")
+
+# Load the model using the cached function
+markov_model = load_model()
+
+two_words = st.text_input(label="Give two words to start the story:")
 
 def read_all_stories(story_path):
   txt = []
@@ -112,33 +115,9 @@ def generate_story(limit,start):
       n += 1
 
    return story
-
-st.divider()
-
-# st.markdown(
-#     """
-#     <style>
-#     .element-container pre {
-#         font-size: 20px !important;
-#     }
-#     </style>
-#     """,
-#     unsafe_allow_html=True
-# )
-
-#print(new_model)
-# --- Streamlit UI ---
-
-st.title("Sherlock Story Generator 🕵️")
-st.header("Create a Story!")
-
-# Load the model using the cached function
-markov_model = load_model()
-
-two_words = st.text_input(label="Give two words to start the story:")
-
+  
 if st.button("Generate Story"):
-    if len(two_words.split()) == 2:
+    if len(two_words.split()):
         with st.spinner("Writing a new mystery..."):
             new_story = generate_story(markov_model, 100, two_words)
             st.divider()
@@ -146,3 +125,6 @@ if st.button("Generate Story"):
             st.markdown(f"> {new_story}")
     else:
         st.error("Please enter exactly two words.")
+      
+st.divider()
+
