@@ -100,7 +100,7 @@ def generate_story(limit,start):
    story = ""
    story += curr_state+" "
    while n < limit:
-      if curr_state in markov model or curr_state not in markov_model:
+      if curr_state in markov_model or curr_state not in markov_model:
         print(f"Error: {curr_state} not in markov_model")
         if curr_state not in markov_model:
           curr_state = random.choice(list(markov_model['this case'].keys()))
